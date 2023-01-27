@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const DiaryEditor = () => {
+    const authorInput = useRef(); //aurhorInput객체는 current Property에 접근
+    const contentInput = useRef();
+
     const [state,setState] = useState({
         author: "",
         content: "",
@@ -14,16 +17,28 @@ const DiaryEditor = () => {
         });
     };
 
+    /**
+     * 일기 저장하기 버튼을 수행합니다.
+     */
     const handleSubmit = () => {
-        console.log(state);
+        // 입력 validation check
+        if(state.author.length < 1){
+            authorInput.current.focus();
+            return;
+        }
+        if(state.content.length < 5){
+            contentInput.current.focus();
+            return;
+        }
         alert('저장 성공');
-    } //저장
+    } 
 
     return (
         <div className='DiaryEditor'>
             <h2>오늘의 일기</h2>
             <div>
                 <input 
+                ref = {authorInput}
                 name = 'author'
                 value={state.author} 
                 onChange ={handleChangeState}
@@ -31,6 +46,7 @@ const DiaryEditor = () => {
             </div>
             <div>
                 <textarea
+                ref = {contentInput}
                 name = 'content'
                 value = {state.content}
                 onChange ={handleChangeState}
