@@ -1,38 +1,32 @@
+import { useRef,useState } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
 
-const dummyList = [
-  {
-    id: 1,
-    author:"김다민",
-    content: "반갑습니다!",
-    emotion: 1,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 2,
-    author:"배주현",
-    content: "반갑습니다",
-    emotion: 3,
-    created_date: new Date().getTime(),
-  },
-  {
-    id: 3,
-    author:"강슬기",
-    content: "반갑습니닿!",
-    emotion: 2,
-    created_date: new Date().getTime(),
-  }
-]
-
 const App = () => {
+  const [data,setData] = useState([]); //현재 state인 data를 diaryList로 넘기고, 상태변화는 Editor에서 props로 넘겨져 이뤄진다.
+
+  const dataId = useRef(0); //id를 리스트에 넘겨줘야 함 
+
+  const onCreate = (author,content,emotion) => {
+    const created_date = new Date().getTime();
+    const newItem = {
+      author,
+      content,
+      emotion,
+      created_date,
+      id: dataId.current
+    }
+    dataId.current += 1;
+    setData([newItem,...data]); //newItem이 맨 위에 추가되도록 setData 매개변수로 전달
+  };
+
   return (
     <div className="App">
-      <DiaryEditor/>
-      <DiaryList diaryList={dummyList}/>
+      <DiaryEditor onCreate={onCreate}/> {/* 일기 작성 건들을 prop으로 넘겨줌 */}
+      <DiaryList diaryList={data}/>
     </div>
-  );
+  ); 
 }
 
 export default App;
