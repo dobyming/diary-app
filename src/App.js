@@ -8,6 +8,7 @@ const App = () => {
 
   const dataId = useRef(0); //id를 리스트에 넘겨줘야 함 
 
+  //일기 생성 기능
   const onCreate = (author,content,emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
@@ -21,10 +22,16 @@ const App = () => {
     setData([newItem,...data]); //newItem이 맨 위에 추가되도록 setData 매개변수로 전달
   };
 
+  //일기 삭제 기능(id를 기준으로 삭제)
+  const onDelete = (targetId) => {
+    const newDiarylst = data.filter((it)=> it.id !== targetId);
+    setData(newDiarylst);
+  }
+
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate}/> {/* 일기 작성 건들을 prop으로 넘겨줌 */}
-      <DiaryList diaryList={data}/>
+      <DiaryList onDelete = {onDelete} diaryList={data}/>
     </div>
   ); 
 }
