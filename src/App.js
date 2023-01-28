@@ -23,7 +23,7 @@ const App = () => {
   };
 
   //일기 삭제 기능(id를 기준으로 삭제)
-  const onDelete = (targetId) => {
+  const onRemove = (targetId) => {
     const newDiarylst = data.filter((it)=> it.id !== targetId);
     setData(newDiarylst);
   }
@@ -31,7 +31,7 @@ const App = () => {
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate}/> {/* 일기 작성 건들을 prop으로 넘겨줌 */}
-      <DiaryList onDelete = {onDelete} diaryList={data}/>
+      <DiaryList onRemove = {onRemove} diaryList={data}/>
     </div>
   ); 
 }
