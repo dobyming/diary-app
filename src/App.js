@@ -26,12 +26,19 @@ const App = () => {
   const onRemove = (targetId) => {
     const newDiarylst = data.filter((it)=> it.id !== targetId);
     setData(newDiarylst);
-  }
+  };
+
+  //일기 수정 기능
+  const onEdit = (targetId,newContent) => {
+    setData(
+      data.map((it)=> it.id === targetId ? {...it,content: newContent} : it)
+    )
+  };
 
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate}/> {/* 일기 작성 건들을 prop으로 넘겨줌 */}
-      <DiaryList onRemove = {onRemove} diaryList={data}/>
+      <DiaryList onRemove = {onRemove} diaryList={data} onEdit={onEdit}/>
     </div>
   ); 
 }
