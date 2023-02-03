@@ -1,9 +1,9 @@
-import React,{ useEffect, useRef, useState } from 'react';
+import React,{ useRef, useState } from 'react';
 
 const DiaryEditor = ({onCreate}) => {
     const authorInput = useRef(); //aurhorInput객체는 current Property에 접근
     const contentInput = useRef();
-    
+
     const [state,setState] = useState({
         author: "",
         content: "",
