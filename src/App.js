@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef, useCallback, useReducer } from 'react';
+import React,{ useMemo, useEffect, useRef, useCallback, useReducer } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -29,10 +29,11 @@ const reducer = (state,action) => {
   }
 }; //상태변화 함수 관리(state:이전 상태, action:switch문에 해당하는 action 처리)
 
-const App = () => {
-  // const [data,setData] = useState([]); //현재 state인 data를 diaryList로 넘기고, 상태변화는 Editor에서 props로 넘겨져 이뤄진다.
-  const [data,dispatch] = useReducer(reducer,[]); //상태변화 함수 리팩토링(App 컴포넌트 밖에다가 reduecer 정의)을 위한 useReducer hook 사용
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext(); //상태 함수들에게 공급할 data Provider
 
+const App = () => {
+  const [data,dispatch] = useReducer(reducer,[]); //상태변화 함수 리팩토링(App 컴포넌트 밖에다가 reduecer 정의)을 위한 useReducer hook 사용
   const dataId = useRef(0); //id를 리스트에 넘겨줘야 함 
 
   //API 호출하기
@@ -77,6 +78,10 @@ const App = () => {
     dispatch({type:'EDIT',targetId,newContent})
   },[]);
 
+  const memoizedDispatches = useMemo(()=>{
+    return {onCreate,onRemove,onEdit};
+  },[]); //최적화 풀리지 않기 위해 useMemo로 객체를 한번 더 랩핑
+
   const getDiaryAnalysis = useMemo(()=> {
     const goodCnt = data.filter((it)=> it.emotion >= 3).length; //기분이 좋은 값의 갯수
     const badCnt = data.length - goodCnt;
@@ -88,14 +93,19 @@ const App = () => {
   const {goodCnt,badCnt,goodRatio} = getDiaryAnalysis;
 
   return (
-    <div className="App">
-      <DiaryEditor onCreate={onCreate}/> {/* 일기 작성 건들을 prop으로 넘겨줌 */}
-      <div>전체 일기 : {data.length} </div>
-      <div>기분 좋은 일기 개수 : {goodCnt} </div>
-      <div>기분 나쁜 일기 개수: {badCnt}</div>
-      <div>기분 좋은 일기 비율: {goodRatio+'%'}</div>
-      <DiaryList onRemove = {onRemove} diaryList={data} onEdit={onEdit}/>
-    </div>
+    <DiaryStateContext.Provider value = {data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          <DiaryEditor/> 
+          <div>전체 일기 : {data.length} </div>
+          <div>기분 좋은 일기 개수 : {goodCnt} </div>
+          <div>기분 나쁜 일기 개수: {badCnt}</div>
+          <div>기분 좋은 일기 비율: {goodRatio+'%'}</div>
+          <DiaryList/>
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
+
   ); 
 }
 

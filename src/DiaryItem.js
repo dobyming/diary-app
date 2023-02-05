@@ -1,6 +1,9 @@
-import React,{ useRef, useState } from "react";
+import React,{ useContext, useRef, useState } from "react";
+import {DiaryDispatchContext} from "./App";
 
-const DiaryItem = ({id,author,content,emotion,created_date,onRemove,onEdit}) => {
+const DiaryItem = ({id,author,content,emotion,created_date,}) => {
+    const {onRemove,onEdit} = useContext(DiaryDispatchContext);
+    
     const [isEdit,setIsEdit] = useState(false);
     const toggleIsEdit = () => {setIsEdit(!isEdit)} //isEdit이 setIsEdit으로 인해 true로 변환 시, 수정 기능 활성화
 

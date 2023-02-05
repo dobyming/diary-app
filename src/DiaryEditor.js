@@ -1,6 +1,9 @@
-import React,{ useRef, useState } from 'react';
+import React,{ useContext, useRef, useState } from 'react';
+import {DiaryDispatchContext} from "./App";
 
-const DiaryEditor = ({onCreate}) => {
+const DiaryEditor = () => {
+    const {onCreate} = useContext(DiaryDispatchContext);
+    
     const authorInput = useRef(); //aurhorInput객체는 current Property에 접근
     const contentInput = useRef();
 
