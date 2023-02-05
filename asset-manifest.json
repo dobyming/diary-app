@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/diary-app/static/css/main.aa073c5e.css",
+    "main.js": "/diary-app/static/js/main.455eb091.js",
+    "index.html": "/diary-app/index.html",
+    "main.aa073c5e.css.map": "/diary-app/static/css/main.aa073c5e.css.map",
+    "main.455eb091.js.map": "/diary-app/static/js/main.455eb091.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aa073c5e.css",
+    "static/js/main.455eb091.js"
+  ]
+}
